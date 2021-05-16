@@ -28,19 +28,24 @@ module.exports = async function (){
         console.log(`child process exited with code ${code}`);
     });
 
-    dataString = dataString.replace(/\n/g, " ");
-    console.log("Data String: "+dataString);
+    try{
+        dataString = dataString.replace(/\n/g, " ");
+        console.log("Data String: "+dataString);
 
-    dataJSON =  JSON.parse(dataString);
+        dataJSON =  JSON.parse(dataString);
 
-    dataFilter = []
-    Object.keys(dataJSON.created_at).forEach(key =>{
-        dataFilter.push({
-            created_at: dataJSON.created_at[key],
-            full_text: dataJSON.full_text[key],
-            phoneNo: dataJSON.phoneNo[key]
+        dataFilter = []
+        Object.keys(dataJSON.created_at).forEach(key =>{
+            dataFilter.push({
+                created_at: dataJSON.created_at[key],
+                full_text: dataJSON.full_text[key],
+                phoneNo: dataJSON.phoneNo[key]
+            })
         })
-    })
+    } catch(e){
+        console.log(e)
+        return [];
+    }
 
     return dataFilter;
 }

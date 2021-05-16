@@ -1,10 +1,11 @@
 var express = require('express');
 const { exampleRun } = require('../pythonUtil/example');
 const pyApplication = require('../pythonUtil/pyapplication');
+var cors = require('cors')
 var router = express.Router();
 
 /* GET users listing. */
-router.get('/', async function (req, res, next) {
+router.get('/', cors(), async function (req, res, next) {
   data = 'not yet';
   // data = await exampleRun();
   data = await pyApplication();
