@@ -1,0 +1,11 @@
+{
+  "base_url": "/",
+  "hostname": "localhost",
+  "notebook_dir": "/home/kunal",
+  "password": false,
+  "pid": 194207,
+  "port": 8888,
+  "secure": false,
+  "token": "8d863f5546d8d142c73078b49984d0a1cb44735ac3696223",
+  "url": "http://localhost:8888/"
+}
