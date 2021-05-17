@@ -4,6 +4,8 @@ var cors = require('cors')
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const mongoose = require('mongoose');
+const pyApplication = require('./pythonUtil/pyapplication');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -40,7 +42,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // });
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/resource', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -56,6 +58,39 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+mongoose.connect(
+  `mongodb+srv://kunal:demo1234@cluster0.r28pq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
+  {useNewUrlParser: true, useUnifiedTopology: true}
+);
+
+const db = mongoose.connection;
+
+async function intervalFunc(){
+  // await pyApplication();
+  console.log("Hello");
+}
+
+function delay(delayInms) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve(2);
+    }, delayInms);
+  });
+}
+
+async function interval(){
+  while(true){
+    await pyApplication();
+    await delay(1200000);
+  }
+}
+
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log('Hurray, We are Connected!!!');
+  interval();
 });
 
 module.exports = app;

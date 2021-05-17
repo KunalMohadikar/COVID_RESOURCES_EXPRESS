@@ -1,7 +1,9 @@
 const { spawn } = require("child_process");
+const tweetSchema = require('../models/tweet');
 
 module.exports = async function (){
 
+    console.log("started");
     const ls = spawn(__dirname+"/twitter_covid_resource/twitter_covid_resource");
     dataObj = [];
     dataString = "";
@@ -31,6 +33,7 @@ module.exports = async function (){
     try{
         dataString = dataString.replace(/\n/g, " ");
         console.log("Data String: "+dataString);
+        console.log("ok");
 
         dataJSON =  JSON.parse(dataString);
 
@@ -45,6 +48,18 @@ module.exports = async function (){
     } catch(e){
         console.log(e)
         return [];
+    }
+
+    if(dataFilter.length != 0){
+        console.log("db operations");
+        try{
+            await tweetSchema.deleteMany({});
+            tweetSchema_doc = await tweetSchema.create(dataFilter);
+            console.log("tweetSchema_doc: ");
+            console.log(tweetSchema_doc);
+        } catch(e){
+            console.log("error: " + e);
+        }
     }
 
     return dataFilter;
