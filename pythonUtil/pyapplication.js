@@ -1,5 +1,6 @@
 const { spawn } = require("child_process");
 const tweetSchema = require('../models/tweet');
+const LastUpdate = require('../models/lastupdate');
 
 module.exports = async function (){
 
@@ -57,6 +58,14 @@ module.exports = async function (){
             tweetSchema_doc = await tweetSchema.create(dataFilter);
             console.log("tweetSchema_doc: ");
             console.log(tweetSchema_doc);
+            date = Date.now();
+            dateObj = LastUpdate({
+                date: date
+            });
+            date_doc = await LastUpdate.find();
+            await LastUpdate.deleteMany({});
+            await dateObj.save();
+            console.log(dateObj);
         } catch(e){
             console.log("error: " + e);
         }
